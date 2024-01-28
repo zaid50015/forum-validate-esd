@@ -12,7 +12,11 @@ export const labTeamMemberSchema = yup.object().shape({
     labTeamMemberEmail: yup.string().email('Invalid email address.').required('Email is required.'),
     labTeamMemberAddress: yup.string().required('Your address is required'), 
     isApprover: yup.boolean(), 
-    role: yup.string().required('Role is required.'),
+    roleName:  yup.string().required('Role is required.').test(
+        'valid-role',
+        'Invalid role. Valid roles are Admin ,User and Super Admin.',
+        value => value === 'Admin' || value === 'User' || value==="Super Admin"
+      ),
 });
 
 function isValidPhoneNumber(phoneNumber) {
