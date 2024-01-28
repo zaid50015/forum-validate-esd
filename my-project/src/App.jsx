@@ -33,9 +33,18 @@ const App = () => {
     validateOnBlur: false,
     //// By disabling validation onChange and onBlur formik will validate on submit.
     onSubmit: async (values, action) => {
-      console.log("🚀 ~ file: App.jsx ~ line 17 ~ App ~ values", values);
-      //// to get rid of all the values after submitting the form
-      // action.resetForm();
+      try {
+        const response = await axios.put(
+            "http://localhost:8080/trakmeserver/api/external/labTeamMember/update",
+            values
+        );
+       
+       
+    } catch (e) {
+       
+        console.log(e)
+      
+    }
     },
   });
   useEffect(() => {
@@ -269,6 +278,17 @@ const App = () => {
               </button>
             </div>
           </form>
+
+
+
+
+
+
+
+
+
+
+
         </div>
       ) : (
         <p>Loading</p>
