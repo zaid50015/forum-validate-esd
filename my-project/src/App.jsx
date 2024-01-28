@@ -33,10 +33,12 @@ const App = () => {
     validateOnBlur: false,
     //// By disabling validation onChange and onBlur formik will validate on submit.
     onSubmit: async (values, action) => {
+      const data={...values,...extraData};
+      console.log(data)
       try {
         const response = await axios.put(
             "http://localhost:8080/trakmeserver/api/external/labTeamMember/update",
-            values
+            data
         );
     } catch (e) {
         console.log(e)
@@ -63,7 +65,6 @@ const App = () => {
         const {
           isApprover,
           labTeamMemberAddress,
-          // labTeamMemberContactNumber,
           labTeamMemberEmail,
           labTeamMemberName,
           labLocationName,
@@ -71,7 +72,7 @@ const App = () => {
           roleId,
           labLocationId,
         } = response?.data;
-       setExtraData({roleId,labLocationId})
+       setExtraData({roleId,labLocationId,labTeamMemberContactNumber:'999956135',usrId,id})
         setValues({
           isApprover,
           labTeamMemberAddress,
@@ -258,17 +259,6 @@ const App = () => {
               </button>
             </div>
           </form>
-
-
-
-
-
-
-
-
-
-
-
         </div>
       ) : (
         <p>Loading</p>
