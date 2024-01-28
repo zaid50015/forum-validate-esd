@@ -7,7 +7,7 @@ const App = () => {
   const initialValues = {
     isApprover:"",
     labTeamMemberAddress:"",
-    labTeamMemberContactNumber:"",
+    // labTeamMemberContactNumber:"",
     labTeamMemberEmail:"",
     labTeamMemberName:"",
     labLocationName:"",
@@ -17,7 +17,7 @@ const App = () => {
   const id = parseInt(useParams().id);
   // const { usrEmail: usrId } = getUser()
   const usrId = 80;
-
+  const [extraData,setExtraData]=useState({})
   const {
     values,
     handleBlur,
@@ -38,12 +38,8 @@ const App = () => {
             "http://localhost:8080/trakmeserver/api/external/labTeamMember/update",
             values
         );
-       
-       
     } catch (e) {
-       
         console.log(e)
-      
     }
     },
   });
@@ -67,26 +63,19 @@ const App = () => {
         const {
           isApprover,
           labTeamMemberAddress,
-          labTeamMemberContactNumber,
+          // labTeamMemberContactNumber,
           labTeamMemberEmail,
           labTeamMemberName,
           labLocationName,
           roleName,
+          roleId,
+          labLocationId,
         } = response?.data;
-        console.log(roleName);
-        // setinitialValues({
-        //   isApprover,
-        //   labTeamMemberAddress,
-        //   labTeamMemberContactNumber,
-        //   labTeamMemberEmail,
-        //   labTeamMemberName,
-        //   labLocationName,
-        //   roleName,
-        // });
+       setExtraData({roleId,labLocationId})
         setValues({
           isApprover,
           labTeamMemberAddress,
-          labTeamMemberContactNumber,
+          // labTeamMemberContactNumber,
           labTeamMemberEmail,
           labTeamMemberName,
           labLocationName,
@@ -99,16 +88,7 @@ const App = () => {
     }
   }
 
-  // const initialValues = {
-  //   labTeamMemberName: "Mo",
-  //   labLocationName: "",
-  //   labTeamMemberContactNumber: "",
-  //   labTeamMemberEmail: "",
-  //   labTeamMemberAddress: "",
-  //   isApprover: true,
-  //   role: "",
-  // };
-  initialValues;
+
 
   return (
     <>
@@ -132,7 +112,7 @@ const App = () => {
                 >
                   Team Member Name<span className="text-red-500">*</span>:
                 </label>
-                {console.log(values.roleName)}
+                
                 <input
                   type="text"
                   className="border border-gray-300 p-2 "
@@ -166,7 +146,7 @@ const App = () => {
                   <p className="text-red-500">{errors.labLocationName}</p>
                 ) : null}
               </div>
-              <div className="flex flex-col mt-2 w-full">
+              {/* <div className="flex flex-col mt-2 w-full">
                 <label
                   className="text-gray-600 font-bold mb-1"
                   htmlFor="labTeamMemberContactNumber"
@@ -188,7 +168,7 @@ const App = () => {
                     {errors.labTeamMemberContactNumber}
                   </p>
                 ) : null}
-              </div>
+              </div> */}
               <div className="flex flex-col mt-2 w-full">
                 <label
                   className="text-gray-600 font-bold mb-1"
