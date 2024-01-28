@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { labTeamMemberSchema } from "./assets/schema/labTeamMemberSchema";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const App = () => {
   const initialValues = {
     isApprover:"",
@@ -13,6 +15,38 @@ const App = () => {
     labLocationName:"",
     roleName:"",
   };
+
+  const updateTeamMembers=async(data,action)=>{
+    try {
+      const response = await axios.put(
+          "http://localhost:8080/trakmeserver/api/external/labTeamMember/update",
+          data
+      );
+      toast.success('Updated Sucessfully', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+  
+  } catch (error) {
+      console.error(error,"Catch executed")
+      toast.error(error.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+  }
+  }
   const [loading, setLoading] = useState(true);
   const id = parseInt(useParams().id);
   // const { usrEmail: usrId } = getUser()
@@ -32,17 +66,10 @@ const App = () => {
     validateOnChange: true,
     validateOnBlur: false,
     //// By disabling validation onChange and onBlur formik will validate on submit.
-    onSubmit: async (values, action) => {
+    onSubmit: (values, action) => {
       const data={...values,...extraData};
       console.log(data)
-      try {
-        const response = await axios.put(
-            "http://localhost:8080/trakmeserver/api/external/labTeamMember/update",
-            data
-        );
-    } catch (e) {
-        console.log(e)
-    }
+        updateTeamMembers(data,action)
     },
   });
   useEffect(() => {
@@ -84,8 +111,20 @@ const App = () => {
         });
         setLoading(false);
       }
+     
     } catch (error) {
       console.error("Error fetching work order data:", error);
+      toast.error(error.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      
+        });
     }
   }
 
@@ -93,8 +132,8 @@ const App = () => {
 
   return (
     <>
-      {!loading ? (
-        <div className="bg-slate-200 px-10 py-4">
+   
+        <div className="bg-slate-200  min-h-screen px-10 py-4">
           <div className=" text-gray-600 font-bold">
             Lab Team Member{" "}
             <span className="text-sm text-gray-400">
@@ -255,14 +294,12 @@ const App = () => {
                 type="submit"
                 className="py-1 px-2 bg-blue-500 text-white flex items-center text-center"
               >
-                Submit
+                Update
               </button>
             </div>
           </form>
         </div>
-      ) : (
-        <p>Loading</p>
-      )}
+        <ToastContainer />
     </>
   );
 };
