@@ -9,7 +9,7 @@ const App = () => {
   const initialValues = {
     isApprover:"",
     labTeamMemberAddress:"",
-    // labTeamMemberContactNumber:"",
+    labTeamMemberContactNumber:"",
     labTeamMemberEmail:"",
     labTeamMemberName:"",
     labLocationName:"",
@@ -68,7 +68,7 @@ const App = () => {
     //// By disabling validation onChange and onBlur formik will validate on submit.
     onSubmit: (values, action) => {
       const data={...values,...extraData};
-      console.log(data)
+      console.log(JSON.stringify(data));
         updateTeamMembers(data,action)
     },
   });
@@ -95,15 +95,16 @@ const App = () => {
           labTeamMemberEmail,
           labTeamMemberName,
           labLocationName,
+          labTeamMemberContactNumber,
           roleName,
           roleId,
           labLocationId,
         } = response?.data;
-       setExtraData({roleId,labLocationId,labTeamMemberContactNumber:'999956135',usrId,id})
+       setExtraData({roleId,labLocationId,usrId,id})
         setValues({
           isApprover,
           labTeamMemberAddress,
-          // labTeamMemberContactNumber,
+          labTeamMemberContactNumber,
           labTeamMemberEmail,
           labTeamMemberName,
           labLocationName,
@@ -186,7 +187,7 @@ const App = () => {
                   <p className="text-red-500">{errors.labLocationName}</p>
                 ) : null}
               </div>
-              {/* <div className="flex flex-col mt-2 w-full">
+               <div className="flex flex-col mt-2 w-full">
                 <label
                   className="text-gray-600 font-bold mb-1"
                   htmlFor="labTeamMemberContactNumber"
@@ -208,7 +209,8 @@ const App = () => {
                     {errors.labTeamMemberContactNumber}
                   </p>
                 ) : null}
-              </div> */}
+                {console.log(values.labTeamMemberContactNumber)}
+              </div> 
               <div className="flex flex-col mt-2 w-full">
                 <label
                   className="text-gray-600 font-bold mb-1"
@@ -255,6 +257,7 @@ const App = () => {
                   className="border border-gray-300 p-2"
                   placeholder="Enter your email"
                   name="labTeamMemberEmail"
+                  disabled={true}
                   value={values.labTeamMemberEmail}
                   onChange={handleChange}
                   onBlur={handleBlur}
