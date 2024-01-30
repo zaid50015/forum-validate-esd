@@ -12,7 +12,13 @@ export const labTeamMemberSchema = yup.object().shape({
         'Invalid phone number.',
         value => isValidPhoneNumber(value)
     ),
+    
     labLocationEmail: yup.string().email('Invalid email address.').required('Email is required.'),
+    labLocationLeadName: yup.string()
+  .matches(/^[A-Za-z\s]+$/, 'Only alphabets and spaces are allowed')
+  .min(2, 'Too Short!')
+  .max(30, 'Too Long!')
+  .required('Required'),
 });
 
 function isValidPhoneNumber(phoneNumber) {

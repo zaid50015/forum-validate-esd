@@ -64,11 +64,11 @@ const App = () => {
     initialValues,
     validationSchema: labTeamMemberSchema,
     validateOnChange: true,
-    validateOnBlur: false,
+    validateOnBlur: true,
     //// By disabling validation onChange and onBlur formik will validate on submit.
     onSubmit: (values, action) => {
       const data = { ...values, ...extraData };
-      // console.log(JSON.stringify(data));
+      
       updateTeamMembers(data, action)
     },
   });
@@ -203,8 +203,7 @@ const App = () => {
                 >
                   Lead Name<span className="text-red-500">*</span>
                 </label>
-                {errors.labLocationLeadName &&
-                  touched.labLocationLeadName ? (
+                {errors.labLocationLeadName ? (
                   <p className="text-red-500">
                     {errors.labLocationLeadName}
                   </p>
@@ -232,7 +231,7 @@ const App = () => {
                 >
                   Email ID<span className="text-red-500">* #</span>
                 </label>
-                {errors.labLocationEmail && touched.labLocationEmail ? (
+                {errors.labLocationEmail ? (
                   <p className="text-red-500">{errors.labLocationEmail}</p>
                 ) : null}
               </div>
@@ -257,7 +256,7 @@ const App = () => {
                 >
                   Contact Number<span className="text-red-500">* </span>
                 </label>
-                {errors.labLocationContactNumber && touched.labLocationContactNumber ? (
+                {errors.labLocationContactNumber? (
                   <p className="text-red-500">{errors.labLocationContactNumber}</p>
                 ) : null}
               </div>
@@ -281,7 +280,7 @@ const App = () => {
                 >
                   Address  <span className="text-red-500">*</span>
                 </label>
-                {errors.labLocationAddress && touched.labLocationAddress ? (
+                {errors.labLocationAddress ? (
                   <p className="text-red-500">{errors.labLocationAddress}</p>
                 ) : null}
               </div>
@@ -304,7 +303,7 @@ const App = () => {
                 >
                   Description
                 </label>
-                {errors.labLocationDescription && touched.labLocationDescription ? (
+                {errors.labLocationDescription? (
                   <p className="text-red-500">{errors.labLocationDescription}</p>
                 ) : null}
               </div>
@@ -327,7 +326,7 @@ const App = () => {
             <button
               type="submit"
               // className="py-1 px-2 bg-blue-500 text-white flex items-center text-center"
-              className="float-start  flex sm:w-full lg:w-1/3  justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+              className="float-start mt-10 flex sm:w-full lg:w-1/3  justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
 
               Update
             </button>
