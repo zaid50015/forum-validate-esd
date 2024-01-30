@@ -7,20 +7,20 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 const App = () => {
   const initialValues = {
-    isApprover:"",
-    labTeamMemberAddress:"",
-    labTeamMemberContactNumber:"",
-    labTeamMemberEmail:"",
-    labTeamMemberName:"",
-    labLocationName:"",
-    roleName:"",
+    labLocationName: "",
+    labLocationIdentifier: "",
+    labLocationLeadName: "",
+    labLocationEmail: "",
+    labLocationContactNumber: "",
+    labLocationAddress: "",
+    labLocationDescription: ""
   };
-
-  const updateTeamMembers=async(data,action)=>{
+  
+  const updateTeamMembers = async (data, action) => {
     try {
       const response = await axios.put(
-          "http://localhost:8080/trakmeserver/api/external/labTeamMember/update",
-          data
+        "http://localhost:8080/trakmeserver/api/external/labLocation/update",
+        data
       );
       toast.success('Updated Sucessfully', {
         position: "top-right",
@@ -31,10 +31,10 @@ const App = () => {
         draggable: true,
         progress: undefined,
         theme: "light",
-        });
-  
-  } catch (error) {
-      console.error(error,"Catch executed")
+      });
+
+    } catch (error) {
+      console.error(error, "Catch executed")
       toast.error(error.message, {
         position: "top-right",
         autoClose: 5000,
@@ -44,14 +44,14 @@ const App = () => {
         draggable: true,
         progress: undefined,
         theme: "light",
-        });
-  }
+      });
+    }
   }
   const [loading, setLoading] = useState(true);
   const id = parseInt(useParams().id);
   // const { usrEmail: usrId } = getUser()
-  const usrId = 80;
-  const [extraData,setExtraData]=useState({})
+  const usrId = "pushyamitra.poonia@gmail.coma";
+  const [extraData, setExtraData] = useState({})
   const {
     values,
     handleBlur,
@@ -67,9 +67,9 @@ const App = () => {
     validateOnBlur: false,
     //// By disabling validation onChange and onBlur formik will validate on submit.
     onSubmit: (values, action) => {
-      const data={...values,...extraData};
-      console.log(JSON.stringify(data));
-        updateTeamMembers(data,action)
+      const data = { ...values, ...extraData };
+      // console.log(JSON.stringify(data));
+      updateTeamMembers(data, action)
     },
   });
   useEffect(() => {
@@ -79,7 +79,7 @@ const App = () => {
     console.log(id, usrId);
     try {
       const response = await axios.get(
-        "http://localhost:8080/trakmeserver/api/external/labTeamMember/get",
+        "http://localhost:8080/trakmeserver/api/external/labLocation/get",
         {
           params: {
             id,
@@ -90,29 +90,29 @@ const App = () => {
 
       if (response?.data) {
         const {
-          isApprover,
-          labTeamMemberAddress,
-          labTeamMemberEmail,
-          labTeamMemberName,
+          labLocationAddress,
+          labLocationContactNumber,
+          labLocationDescription,
+          labLocationEmail,
+          labLocationIdentifier,
+          labLocationLeadInitial,
+          labLocationLeadName,
           labLocationName,
-          labTeamMemberContactNumber,
-          roleName,
-          roleId,
-          labLocationId,
+
         } = response?.data;
-       setExtraData({roleId,labLocationId,usrId,id})
+        setExtraData({ labLocationLeadInitial, usrId, id })
         setValues({
-          isApprover,
-          labTeamMemberAddress,
-          labTeamMemberContactNumber,
-          labTeamMemberEmail,
-          labTeamMemberName,
           labLocationName,
-          roleName,
+          labLocationIdentifier,
+          labLocationLeadName,
+          labLocationEmail,
+          labLocationContactNumber,
+          labLocationAddress,
+          labLocationDescription
         });
         setLoading(false);
       }
-     
+
     } catch (error) {
       console.error("Error fetching work order data:", error);
       toast.error(error.message, {
@@ -124,8 +124,8 @@ const App = () => {
         draggable: true,
         progress: undefined,
         theme: "light",
-      
-        });
+
+      });
     }
   }
 
@@ -133,176 +133,208 @@ const App = () => {
 
   return (
     <>
-   
-        <div className="bg-slate-200  min-h-screen px-10 py-4">
-          <div className=" text-gray-600 font-bold">
-            Lab Team Member{" "}
-            <span className="text-sm text-gray-400">
-              (<span style={{ fontSize: "0.8em" }}>EDIT</span>)
-            </span>
-          </div>
-          <form onSubmit={handleSubmit}>
-            <div className="flex flex-col text-gray-500  items-start h-50 bg-white border-t-2 border-blue-600 p-4 rounded-md">
-              <h1 className="text-left mb-4">Manage Lab Team Member Details</h1>
 
-              {/* Input field with label */}
-              <div className="flex flex-col mt-2 w-full">
-                <label
-                  className="text-gray-600 font-bold mb-1"
-                  htmlFor="labTeamMemberName"
-                >
-                  Team Member Name<span className="text-red-500">*</span>:
-                </label>
-                
-                <input
-                  type="text"
-                  className="border border-gray-300 p-2 "
-                  placeholder="Enter your name"
-                  name="labTeamMemberName"
-                  value={values.labTeamMemberName}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.labTeamMemberName && touched.labTeamMemberName ? (
-                  <p className="text-red-500">{errors.labTeamMemberName}</p>
-                ) : null}
-              </div>
-              <div className="flex flex-col mt-2 w-full">
+      <div className="bg-slate-200  min-h-screen px-10 py-4">
+        <div className=" text-gray-600 font-bold">
+          Lab Location{" "}
+          <span className="text-sm text-gray-400">
+            (<span style={{ fontSize: "0.8em" }}>EDIT</span>)
+          </span>
+        </div>
+        <form onSubmit={handleSubmit}>
+          <div className="flex flex-col text-gray-500  items-start h-50 bg-white border-t-2 border-blue-600 p-4 rounded-md">
+            <h1 className="text-left mb-2">Manage Lab Location Details</h1>
+            <div className="w-full h-px bg-slate-200"></div>
+
+            {/* Input field with label */}
+            <div className="flex flex-col mt-2 w-full">
+              <div className="flex flex-row w-full justify-between">
                 <label
                   className="text-gray-600 font-bold mb-1"
                   htmlFor="labLocationName"
                 >
-                  Lab Location<span className="text-red-500">*</span>
+                  Lab Name<span className="text-red-500">*</span>:
                 </label>
-                <input
-                  type="text"
-                  className="border border-gray-300 p-2 "
-                  placeholder="Enter the lablocation id"
-                  name="labLocationName"
-                  value={values.labLocationName}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
                 {errors.labLocationName && touched.labLocationName ? (
                   <p className="text-red-500">{errors.labLocationName}</p>
                 ) : null}
               </div>
-               <div className="flex flex-col mt-2 w-full">
+              <input
+                type="text"
+                className="border border-gray-300 p-2 rounded disabled:cursor-not-allowed"
+                placeholder="Enter your Lab Name"
+                name="labLocationName"
+                disabled
+                value={values.labLocationName}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+            </div>
+
+            <div className="flex flex-col mt-2 w-full">
+              <div className="flex flex-row w-full justify-between">
                 <label
                   className="text-gray-600 font-bold mb-1"
-                  htmlFor="labTeamMemberContactNumber"
+                  htmlFor="labLocationIdentifier"
                 >
-                  Contact Number<span className="text-red-500">*</span>
+                  Lab Id<span className="text-red-500">*</span>:
                 </label>
-                <input
-                  type="number"
-                  className=" border border-gray-300 p-2 "
-                  placeholder="Enter your contack number"
-                  name="labTeamMemberContactNumber"
-                  value={values.labTeamMemberContactNumber}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.labTeamMemberContactNumber &&
-                touched.labTeamMemberContactNumber ? (
+                {errors.labLocationIdentifier && touched.labLocationIdentifier ? (
+                  <p className="text-red-500">{errors.labLocationIdentifier}</p>
+                ) : null}
+              </div>
+              <input
+                type="text"
+                className="border border-gray-300 p-2 rounded disabled:cursor-not-allowed"
+                placeholder="Enter the lablocation id"
+                name="labLocationIdentifier"
+                disabled
+                value={values.labLocationIdentifier}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+            </div>
+
+            <div className="flex flex-col mt-2 w-full">
+              <div className="flex flex-row w-full justify-between">
+                <label
+                  className="text-gray-600 font-bold mb-1"
+                  htmlFor="labLocationLeadName"
+                >
+                  Lead Name<span className="text-red-500">*</span>
+                </label>
+                {errors.labLocationLeadName &&
+                  touched.labLocationLeadName ? (
                   <p className="text-red-500">
-                    {errors.labTeamMemberContactNumber}
+                    {errors.labLocationLeadName}
                   </p>
                 ) : null}
-                {console.log(values.labTeamMemberContactNumber)}
-              </div> 
-              <div className="flex flex-col mt-2 w-full">
+              </div>
+              <input
+                type="text"
+                className=" border border-gray-300 p-2 rounded "
+                placeholder="Enter your lead name"
+                name="labLocationLeadName"
+                value={values.labLocationLeadName}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+            </div>
+
+
+
+
+            <div className="flex flex-col mt-2 w-full">
+              <div className="flex flex-row w-full justify-between">
                 <label
                   className="text-gray-600 font-bold mb-1"
-                  htmlFor="roleName"
-                >
-                  Role<span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  className=" border border-gray-300 p-2 "
-                  placeholder="Enter your role"
-                  name="roleName"
-                  value={values.roleName}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.roleName && touched.roleName ? (
-                  <p className="text-red-500">{errors.roleName}</p>
-                ) : null}
-              </div>
-              <div className="flex flex-row items-center mt-2 w-full">
-                <label className="text-gray-600 font-bold" htmlFor="isApprover">
-                  Approver:
-                </label>
-                <input
-                  type="checkbox"
-                  className="mt-2 ml-1 border border-gray-300"
-                  name="isApprover"
-                  checked={values.isApprover}
-                  value={values.isApprover}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-              </div>
-              <div className="flex flex-col mt-2 w-full">
-                <label
-                  className="text-gray-600 font-bold mb-1"
-                  htmlFor="labTeamMemberEmail"
+                  htmlFor="labLocationEmail"
                 >
                   Email ID<span className="text-red-500">* #</span>
                 </label>
-                <input
-                  type="text"
-                  className="border border-gray-300 p-2"
-                  placeholder="Enter your email"
-                  name="labTeamMemberEmail"
-                  disabled={true}
-                  value={values.labTeamMemberEmail}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.labTeamMemberEmail && touched.labTeamMemberEmail ? (
-                  <p className="text-red-500">{errors.labTeamMemberEmail}</p>
+                {errors.labLocationEmail && touched.labLocationEmail ? (
+                  <p className="text-red-500">{errors.labLocationEmail}</p>
                 ) : null}
               </div>
-              <div className="flex flex-col mt-2 w-full">
+              <input
+                type="email"
+                className="border border-gray-300 p-2 rounded"
+                placeholder="Enter lab location email"
+                name="labLocationEmail"
+                
+                value={values.labLocationEmail}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+            </div>
+
+
+            <div className="flex flex-col mt-2 w-full">
+              <div className="flex flex-row w-full justify-between">
                 <label
                   className="text-gray-600 font-bold mb-1"
-                  htmlFor="labTeamMemberAddress"
+                  htmlFor="labLocationContactNumber"
                 >
-                  Address
+                  Contact Number<span className="text-red-500">* </span>
                 </label>
-                <input
-                  type="text"
-                  className=" h-20 border border-gray-300 p-2 "
-                  placeholder="Enter your address"
-                  name="labTeamMemberAddress"
-                  value={values.labTeamMemberAddress}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.labTeamMemberAddress && touched.labTeamMemberAddress ? (
-                  <p className="text-red-500">{errors.labTeamMemberAddress}</p>
+                {errors.labLocationContactNumber && touched.labLocationContactNumber ? (
+                  <p className="text-red-500">{errors.labLocationContactNumber}</p>
                 ) : null}
               </div>
-              <label className="mt-3 mb-1 text-sm text-gray-600 font-bold">
-                <span className="text-red-500">*</span>Mandatory Fields
-              </label>
-              <label className=" mb-1 text-sm text-gray-600 font-bold">
-                <span className="text-red-500">*</span>Email address will be
-                used as username to login{" "}
-              </label>
-              <button
-                type="submit"
-                className="py-1 px-2 bg-blue-500 text-white flex items-center text-center"
-              >
-                Update
-              </button>
+              <input
+                type="number"
+                className="border border-gray-300 p-2 rounded"
+                placeholder="Enter lab location contact number"
+                name="labLocationContactNumber"
+                
+                value={values.labLocationContactNumber}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
             </div>
-          </form>
-        </div>
-        <ToastContainer />
+
+            <div className="flex flex-col mt-2 w-full">
+              <div className="flex flex-row w-full justify-between">
+                <label
+                  className="text-gray-600 font-bold mb-1"
+                  htmlFor="labLocationAddress"
+                >
+                  Address  <span className="text-red-500">*</span>
+                </label>
+                {errors.labLocationAddress && touched.labLocationAddress ? (
+                  <p className="text-red-500">{errors.labLocationAddress}</p>
+                ) : null}
+              </div>
+              <textarea
+                type="text"
+                className=" h-20 border border-gray-300 p-2 rounded"
+                placeholder="Enter lab address"
+                name="labLocationAddress"
+                value={values.labLocationAddress}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+            </div>
+
+            <div className="flex flex-col mt-2 w-full">
+              <div className="flex flex-row w-full justify-between">
+                <label
+                  className="text-gray-600 font-bold mb-1"
+                  htmlFor="labLocationDescription"
+                >
+                  Description
+                </label>
+                {errors.labLocationDescription && touched.labLocationDescription ? (
+                  <p className="text-red-500">{errors.labLocationDescription}</p>
+                ) : null}
+              </div>
+              <textarea
+                type="text"
+                className=" h-20 border border-gray-300 p-2 rounded"
+                placeholder="Enter description"
+                name="labLocationDescription"
+                value={values.labLocationDescription}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+            </div>
+
+
+
+            <label className="mt-3 mb-1 text-sm text-gray-600 font-bold">
+              <span className="text-red-500">*</span>Mandatory Fields
+            </label>
+            <button
+              type="submit"
+              // className="py-1 px-2 bg-blue-500 text-white flex items-center text-center"
+              className="float-start  flex sm:w-full lg:w-1/3  justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+
+              Update
+            </button>
+          </div>
+        </form>
+      </div>
+      <ToastContainer />
     </>
   );
 };

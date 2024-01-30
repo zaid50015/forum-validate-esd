@@ -1,21 +1,18 @@
 import * as yup from "yup";
-
+// labLocationName: "",
+//     labLocationIdentifier: "",
+//     labLocationLeadName: "",
+//     labLocationEmail: "",
+//     labLocationContactNumber: "",
+//     labLocationAddress: "",
+//     labLocationDescription: ""
 export const labTeamMemberSchema = yup.object().shape({
-    labTeamMemberName: yup.string().min(2,"Name must contain atleast 2 characters").max(30,"Name must be within 30 characters").required("Please enter your name"),
-    labLocationName: yup.string().required('Lab Location is required'), 
-    // labTeamMemberContactNumber: yup.string().required('Contact number is required.').test(
-    //     'is-valid-phone-number',
-    //     'Invalid phone number.',
-    //     value => isValidPhoneNumber(value)
-    // ),
-    labTeamMemberEmail: yup.string().email('Invalid email address.').required('Email is required.'),
-    labTeamMemberAddress: yup.string().required('Your address is required'), 
-    isApprover: yup.boolean(), 
-    roleName:  yup.string().required('Role is required.').test(
-        'valid-role',
-        'Invalid role. Valid roles are Admin ,User and Super Admin.',
-        value => value === 'Admin' || value === 'User' || value==="Super Admin"
-      ),
+    labLocationContactNumber: yup.string().required('Contact number is required.').test(
+        'is-valid-phone-number',
+        'Invalid phone number.',
+        value => isValidPhoneNumber(value)
+    ),
+    labLocationEmail: yup.string().email('Invalid email address.').required('Email is required.'),
 });
 
 function isValidPhoneNumber(phoneNumber) {
